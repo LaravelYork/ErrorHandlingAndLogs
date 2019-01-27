@@ -21,11 +21,9 @@ trait Loggable {
 
         if ($this->isConsole()) {
 
-            $this->alert(" ** EMERGENCY  ** ");
+            $this->alert(" ** 🚨  EMERGENCY  🚨 ** ");
             
             $this->line($string, 'error', 'normal');
-
-            $this->alert(" ** EMERGENCY  ** ");
 
             //artisan down
         }

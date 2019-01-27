@@ -24,7 +24,7 @@ class LogTesting extends CoreCommand
 
             //Logging
             case 'emergency':
-                $this->emergency("** Emergency ** Site is  down"); //System is unusable	
+                $this->emergency(" -- SITE IS DOWN -- "); //System is unusable	
             break;
             case 'alert':
                 $this->alert("Alert Test "); //Action must be taken immediately, corrupted database.
