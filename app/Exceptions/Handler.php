@@ -48,4 +48,44 @@ class Handler extends ExceptionHandler
     {
         return parent::render($request, $exception);
     }
+
+    public static function traceStack($exception)
+    {
+        $d = [];
+        $i = 0;
+
+        $trace = array_reverse($exception->getTrace());
+
+        foreach ($trace as $t) {
+
+            if (isset($t['class']) && !preg_match("/^App/", $t['class'])){
+                continue;
+            }
+
+            if (isset($t['function']) && (stristr($t['function'], '{main}') || stristr($t['function'], 'call_user_func') || stristr($t['function'], 'call_user_func') || stristr($t['function'], 'call_user_func_array') || stristr($t['function'], 'closure'))) {
+                continue;
+            }
+
+            $d[$i] = '';
+            if (isset($t['class'])) {
+                $d[$i] .= $t['class'].'->';
+            }
+            if (isset($t['function'])) {
+                $d[$i] .=  $t['function'].'()';
+            }
+            if (isset($t['line'])) {
+                $d[$i] .= ' @ line '.$t['line'].'';
+            }
+
+            ++$i;
+        }
+
+        $file = $exception->getFile();
+        if (!stristr($file, 'filters')) {
+            $d[$i] = $file;
+            $d[$i] .= ' @ line '.$exception->getLine();
+        }
+
+        return array_reverse($d);
+    }
 }
