@@ -24,32 +24,32 @@ class LogTesting extends CoreCommand
 
             //Logging
             case 'emergency':
-                $this->emergency(" -- SITE IS DOWN -- "); //System is unusable	
+                $this->logEmergency(" -- SITE IS DOWN -- ");
             break;
             case 'alert':
-                $this->alert("Alert Test "); //Action must be taken immediately, corrupted database.
+                $this->logAlert("Alert Test");
             break;
             case 'critical':
-                $this->critical("Critical Test");
+                $this->logCritical("Critical Test");
             break;
             case 'error':
-                $this->error("Error Test");
+                $this->logError("Error Test");
             break;
 
             // '-v' required 
             case 'warning':
-                $this->warning("Warning Test");
+                $this->logWarning("Warning Test");
             break;
             case 'notice':
-                $this->notice("Notice Test");
+                $this->logNotice("Notice Test");
             break;
             // '-vv' required 
             case 'info':
-                $this->info("Info Test");
+                $this->logInfo("Info Test");
             break;
             // '-vvv' required 
             case 'debug':
-                $this->debug("Debug Test");
+                $this->logDebug("Debug Test");
             break;
 
             //Exceptions

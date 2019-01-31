@@ -9,10 +9,15 @@ use App\Exceptions\Handler;
 
 trait Loggable {
 
+   // https://github.com/Seldaek/monolog/blob/master/doc/01-usage.md#log-levels
+
     protected $is_console;
     protected $testing;
-
-    public function emergency($string, $debug = [])
+    
+    /*
+    *  System is unusable, should switch to maintenance mode, urgent action needed.
+    */
+    public function logEmergency($string, $debug = [])
     {   
 
         $debug = $this->addMeta($debug);
@@ -25,27 +30,34 @@ trait Loggable {
             
             $this->line($string, 'error', 'normal');
 
-            //artisan down
+           // App::down();
+
         }
     }
 
-    //alert
-    // public function alert($string, $debug = [])
-    // {   
+    /*
+    *  System has reduced functionality, multiple features are failing, urgent action needed. 
+    *  Unhandled deadlock
+    */
+    public function logAlert($string, $debug = [])
+    {   
 
-    //     $debug = $this->addMeta($debug);
+        $debug = $this->addMeta($debug);
 
-    //     Log::alert($string, $debug);
+        Log::alert($string, $debug);
 
-    //     if ($this->isConsole()) {
+        if ($this->isConsole()) {
 
-    //         $this->alert(" ALERT ");
-    //         $this->line($string, 'error', 'normal');
+            $this->alert(" 🚨 ALERT ");
+            $this->line($string, 'error', 'normal');
 
-    //     }
-    // }
+        }
+    }
 
-    public function critical($string, $debug = [])
+    /*
+    *  A feature has stopped working, action needed.
+    */
+    public function logCriticalError($string, $debug = [])
     {   
 
         $debug = $this->addMeta($debug);
@@ -54,13 +66,17 @@ trait Loggable {
 
         if ($this->isConsole()) {
 
-            $this->alert("CRITICAL");
+            $this->alert(" CRITICAL ERROR ");
             $this->line($string, 'error', 'normal');
 
         }
     }
 
-    public function error($string, $debug = [])
+    /*
+    *   An unexpected result occurred when trying to perform a necessary task
+    */
+
+    public function logError($string, $debug = [])
     {   
 
         $debug = $this->addMeta($debug);
@@ -76,7 +92,11 @@ trait Loggable {
 
     // '-v' required 
 
-    public function warning($string, $debug = [])
+    /*
+    *    
+    */
+
+    public function logWarning($string, $debug = [])
     {   
 
         $debug = $this->addMeta($debug);
@@ -89,7 +109,7 @@ trait Loggable {
 
         }
     }
-    public function notice($string, $debug = [])
+    public function logNotice($string, $debug = [])
     {   
       
         Log::notice($string, array_merge(['command'=>$this->name], $debug));
@@ -101,7 +121,7 @@ trait Loggable {
 
     // '-vv' required 
 
-    public function info($string, $debug = [], $verbosity = null)
+    public function logInfo($string, $debug = [], $verbosity = null)
     {
         Log::info($string, $this->addMeta($debug));
 
@@ -112,7 +132,7 @@ trait Loggable {
 
     // '-vvv' required 
 
-    public function debug($string, $debug = [])
+    public function logDebug($string, $debug = [])
     {   
 
         $debug = $this->addMeta($debug);
