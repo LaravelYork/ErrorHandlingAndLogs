@@ -24,7 +24,7 @@ trait Loggable {
 
         Log::emergency($string, $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
 
             $this->alert(" ** 🚨  EMERGENCY  🚨 ** ");
             
@@ -46,7 +46,7 @@ trait Loggable {
 
         Log::alert($string, $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
 
             $this->alert(" 🚨 ALERT ");
             $this->line($string, 'error', 'normal');
@@ -64,7 +64,7 @@ trait Loggable {
 
         Log::critical($string, $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
 
             $this->alert(" CRITICAL ERROR ");
             $this->line($string, 'error', 'normal');
@@ -82,7 +82,7 @@ trait Loggable {
         $debug = $this->addMeta($debug);
         Log::error($string,  $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
             
             $this->alert("ERROR");
 
@@ -103,7 +103,7 @@ trait Loggable {
 
         Log::warning($string, $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
 
             $this->warn($string, 'v');
 
@@ -113,7 +113,7 @@ trait Loggable {
     {   
       
         Log::notice($string, array_merge(['command'=>$this->name], $debug));
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
             $this->warn($string, 'v');
            
         }
@@ -125,7 +125,7 @@ trait Loggable {
     {
         Log::info($string, $this->addMeta($debug));
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
            $this->line($string, 'info', 'vv');
         }
     }
@@ -141,7 +141,7 @@ trait Loggable {
 
         Log::debug($string, $debug);
 
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
             $this->line($string, 'question', 'vvv');
 
             dump($debug);
@@ -162,7 +162,7 @@ trait Loggable {
     protected function addMeta(Array $debug){
         
         $meta_info = [];
-        if ($this->isConsole()) {
+        if ($this->isCommand()) {
             
             $meta_info['command'] = $this->name;
             $meta_info['timeElapsed'] = $this->getElapsedTime();
@@ -172,6 +172,11 @@ trait Loggable {
 
     }
 
+
+    protected function isCommand(){
+
+        return $this->isConsole() && isset($this->name);
+    }
     public static function parseException(Exception $e)
     {
     

@@ -65,10 +65,10 @@ class Handler extends ExceptionHandler
     public function report(Exception $exception)
     {   
 
-        if ($this->shouldReport($e)) {
+        if ($this->shouldReport($exception)) {
 
             $log_detail = [
-                'Exception' => get_class($e),
+                'Exception Class' => get_class($exception),
                 'Environment' => ucfirst(App::environment()),
                 'App' => Config::get('aha.name'),
                 'Console'=> App::runningInConsole() ? 'Yes': 'No',
@@ -78,7 +78,7 @@ class Handler extends ExceptionHandler
                 'Api'=> (request()->is('api') || request()->is('api/*')) ? 'Yes' : 'No'
             ];
 
-            $this->error($e->getMessage(), $log_detail);
+            $this->logError($exception->getMessage(), $log_detail);
         }
 
     }
@@ -91,7 +91,16 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $exception)
-    {
+    {   
+
+        if ($request->ajax() || $request->wantsJson() || $request->is('api') || $request->is('api/*')) {
+
+        } elseif ($e instanceof ValidationException){
+              
+            return parent::render($request,$exception);
+
+        }
+
         return parent::render($request, $exception);
     }
 
