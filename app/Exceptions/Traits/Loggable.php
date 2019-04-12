@@ -144,7 +144,7 @@ trait Loggable {
         if ($this->isCommand()) {
             $this->line($string, 'question', 'vvv');
 
-            dump($debug);
+          //  dump($debug);
 
         }
     }

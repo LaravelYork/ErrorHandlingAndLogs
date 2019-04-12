@@ -37,19 +37,16 @@ return [
         'stack' => [
             'driver' => 'stack',
             'channels' => ['daily','slack'],
-        ],
 
-        'single' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/laravel.log'),
-            'level' => 'debug',
+            //customSlack
+           // 'channels' => ['db'],
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/laravel.log'),
+            'path' => storage_path('logs'. DIRECTORY_SEPARATOR . php_sapi_name() . '-'. getenv('APP_NAME').'-'.getenv('APP_ENV').'.log'),
             'level' => 'debug',
-            'days' => 14,
+            'days' => 7,
         ],
 
         'slack' => [
@@ -88,6 +85,23 @@ return [
             'driver' => 'errorlog',
             'level' => 'debug',
         ],
+
+        'db' => [
+            'driver' => 'custom',
+            'via' => \App\Logging\CustomDBLogger::class,
+            'level' => 'debug',
+           // 'level' => env('LOG_DB_LEVEL', Monolog\Logger::NOTICE)
+        ],
+
+        'customSlack' => [
+            'driver' => 'custom',
+            'via' => \App\Logging\CustomSlackLogger::class,
+            'level' => 'debug',
+            //'level' => env('LOG_SLACK_LEVEL', Monolog\Logger::ERROR)
+        ]
     ],
+
+    'slack_api_token' => env('SLACK_TOKEN', ''),
+    'slack_api_channel' => env('SLACK_CHANNEL', ''),
 
 ];

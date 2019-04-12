@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use App\Console\Commands\Traits\MeasuresElaspedTime;
-use  App\Exceptions\Traits\Loggable;
+use App\Exceptions\Traits\Loggable;
 
 
 class CoreCommand extends Command
