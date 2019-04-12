@@ -95,7 +95,7 @@ class Handler extends ExceptionHandler
 
         if ($request->ajax() || $request->wantsJson() || $request->is('api') || $request->is('api/*')) {
 
-        } elseif ($e instanceof ValidationException){
+        } elseif ($exception instanceof ValidationException){
               
             return parent::render($request,$exception);
 
